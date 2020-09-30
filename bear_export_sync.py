@@ -576,7 +576,7 @@ def update_bear_note(md_text, md_file, ts, ts_last_export):
     return
 
 
-def get_tag_from_path(md_text, md_file, root_path, inbox_for_root=True, extra_tag=''):
+def get_tag_from_path(md_text, md_file, root_path, inbox_for_root=False, extra_tag=''):
     # extra_tag should be passed as '#tag' or '#space tag#'
     path = md_file.replace(root_path, '')[1:]
     sub_path = os.path.split(path)[0]

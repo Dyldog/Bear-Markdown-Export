@@ -141,7 +141,7 @@ def move_import_to_done(file_bundle, import_path, import_done):
     shutil.move(file_bundle, dest_file)
 
 
-def get_tag_from_path(md_text, file_bundle, root_path, inbox_for_root=True):
+def get_tag_from_path(md_text, file_bundle, root_path, inbox_for_root=False):
     path = file_bundle.replace(root_path, '')[1:]
     sub_path = os.path.split(path)[0]
     tags = []
