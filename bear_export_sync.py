@@ -180,8 +180,7 @@ def export_markdown():
             file_list.append(os.path.join(temp_path, filename))
         if file_list:
             mod_dt = dt_conv(modified)
-            md_text = hide_tags(md_text)
-            md_text += '\n\n<!-- {BearID:' + uuid + '} -->\n'
+            md_text = '---\nBearID:' + uuid + '\n---\n' + hide_tags(md_text)
             for filepath in file_list:
                 note_count += 1
                 # print(filepath)
@@ -501,10 +500,11 @@ def check_if_image_added(md_text, md_file):
 def textbundle_to_bear(md_text, md_file, mod_dt):
     md_text = restore_tags(md_text)
     bundle = os.path.split(md_file)[0]
-    match = re.search(r'\{BearID:(.+?)\}', md_text)
+    match = re.search(r'BearID: (.+?)', md_text)
     if match:
         uuid = match.group(1)
         # Remove old BearID: from new note
+        md_text = re.sub(r'---\nBearID\:' + uuid + r'\n---', '', md_text).lstrip() + '\n'
         md_text = re.sub(r'\<\!-- ?\{BearID\:' + uuid + r'\} ?--\>', '', md_text).rstrip() + '\n'
         md_text = insert_link_top_note(md_text, 'Images added! Link to original note: ', uuid)
     else:
@@ -543,12 +543,14 @@ def update_bear_note(md_text, md_file, ts, ts_last_export):
     md_text = restore_tags(md_text)
     md_text = restore_image_links(md_text)
     uuid = ''
-    match = re.search(r'\{BearID:(.+?)\}', md_text)
+    match = re.search(r'---\nBearID:(.+?)\n---', md_text)
     sync_conflict = False
     if match:
         uuid = match.group(1)
         # Remove old BearID: from new note
+        md_text = re.sub(r'---\nBearID\:' + uuid + r'\}\n---', '', md_text).strip()
         md_text = re.sub(r'\<\!-- ?\{BearID\:' + uuid + r'\} ?--\>', '', md_text).rstrip() + '\n'
+
 
         sync_conflict = check_sync_conflict(uuid, ts_last_export)
         if sync_conflict:
