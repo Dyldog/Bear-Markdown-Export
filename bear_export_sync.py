@@ -548,7 +548,7 @@ def update_bear_note(md_text, md_file, ts, ts_last_export):
     if match:
         uuid = match.group(1)
         # Remove old BearID: from new note
-        md_text = re.sub(r'---\nBearID\:' + uuid + r'\}\n---', '', md_text).strip()
+        md_text = re.sub(r'---\nBearID\:' + uuid + r'\n---', '', md_text).strip()
         md_text = re.sub(r'\<\!-- ?\{BearID\:' + uuid + r'\} ?--\>', '', md_text).rstrip() + '\n'
 
 
