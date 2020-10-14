@@ -73,6 +73,7 @@ import shutil
 import fnmatch
 import json
 import argparse
+from slugify import slugify
 
 parser = argparse.ArgumentParser(description="Sync Bear notes")
 parser.add_argument("--out", default=default_out_folder, help="Path where Bear notes will be synced")
@@ -359,8 +360,9 @@ def clean_title(title):
     title = title[:256].strip()
     if title == "":
         title = "Untitled"
-    title = re.sub(r'[/\\*?$@!^&\|~:\.]', r'-', title)
-    title = re.sub(r'-$', r'', title)    
+    # title = re.sub(r'[/\\*?$@!^&\|~:\. ,]', r'-', title)
+    # title = re.sub(r'-$', r'', title)    
+    title = slugify(title)
     return title.strip()
 
 
